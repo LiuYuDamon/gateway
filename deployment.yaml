@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: sba
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: registry.cn-beijing.aliyuncs.com/damondocker/api-gateway:{version}
+          ports:
+            - name: http-port
+              containerPort: 9000
+          env:
+            - name: spring_profiles_active
+              value: k8s
+      imagePullSecrets:
+        - name: sba
